@@ -45,11 +45,17 @@ List.prototype.draw = function() {
     return;
   }
 
+  var activeLi
   for (var i = 0; i < this.items.length; i++) {
-    this.drawItem(this.items[i], this.active === i);
+    const isActive = this.active === i
+    const thisLi = this.drawItem(this.items[i], isActive);
+    if (isActive) {
+      activeLi = thisLi
+    }
   }
 
   this.show();
+  activeLi.scrollIntoViewIfNeeded()
 };
 
 List.prototype.drawItem = function(item, active) {
@@ -70,6 +76,8 @@ List.prototype.drawItem = function(item, active) {
   li.addEventListener('mouseup', function() {
     this.handleMouseUp.call(this, item);
   }.bind(this));
+
+  return li
 };
 
 List.prototype.handleMouseUp = function(item) {
